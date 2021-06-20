@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="employee.css" rel="stylesheet">
+
+    <title>Employees</title>
+
+</head>
+
+<body class="text-center">
+    <ul id="nav-bar">
+        <li><a href="#home" style="text-align: center; ">Employee Home</a></li>
+        <li><a href="sign_in.html">Logout</a></li>
+    </ul>
+
+    <div class="container">
+
+        <div class="all-req">
+            <h1 class="h1">All Your Requests</h1>
+
+            <table class="employee_table">
+                <thead>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Comment</th>
+                </thead>
+                <tbody id="requestTableBody">
+                </tbody>
+            </table>
+        </div>
+        <div class="new-req">
+            <h1 class="h2">New Request Form</h1>
+
+            <label for="amount">Amount</label>
+            <input name="amount" id="amountInput" type="number" required="true" placeholder="$">
+            <label for="reason">Reason</label>
+            <input name="reason" id="reasonInput" type="text" required="true" placeholder="Reason">
+            <label for="rstatus">Status</label>
+            <input name="rstatus" id="statusInput" type="text" placeholder="status">
+            <label for="message">Comment</label>
+            <input name="message" id="messageInput" type="text" placeholder="comment">
+            <button type="submit" id="submitBtn" style="margin-top: 10px;" onclick="addRequest()">Submit</button>
+
+        </div>
+        <div class="blank"></div>
+</body>
+<script>
+    const amountInput = document.getElementById("amountInput")
+    const reasonInput = document.getElementById("reasonInput")
+    const statusInput = document.getElementById("statusInput")
+    const messageInput = document.getElementById("messageInput")
+    const employee_id = localStorage.getItem("employee_id");
+    get_request_by_eid(employee_id)
+
+    async function addRequest() {
+        console.log("hey")
+        if (amountInput.value === "" || reasonInput.value === "" || statusInput.value === "") {
+            return alert("some fields are empty")
+        } else {
+            const erequest = {
+                erequestId: 0,
+                amount: Number(amountInput.value),
+                reason: reasonInput.value,
+                rstatus: statusInput.value,
+                message: messageInput.value,
+                employeeId: employee_id,
+            }
+            const config = {
+                method: "POST",
+                headers: {
+                    'Content-Type': "application/json"
+                },
+                body: JSON.stringify(erequest)
+            }
+            const response = await fetch("http://127.0.0.1:5000/requests", config)
+            if (response.status === 201) {
+                return alert(`The request was successfully submitted`)
+            } else {
+                return alert("Something went wrong ")
+            }
+        }
+    }
+
+    async function get_request_by_eid(employee_id) {
+        console.log("hey")
+        const response = await fetch(`http://127.0.0.1:5000/requests/${employee_id}`)
+        if (response.status === 404) {
+            return alert(" There is not any request for you.")
+        } else {
+            const requests = await response.json()
+            let innerRows = ""
+            for (let r of requests) {
+                innerRows += `<tr>
+             <td>${r.erequestId}</td>
+             <td>${r.amount}</td>
+             <td>${r.reason}</td>
+             <td>${r.rstatus}</td>
+             <td>${r.message}</td>
+             </tr>`
+            }
+            requestTableBody.innerHTML = innerRows
+        }
+    }
+</script>
+
+</html>

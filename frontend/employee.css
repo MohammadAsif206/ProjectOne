@@ -1,0 +1,94 @@
+html,
+body {
+    height: 100%;
+    background-color: rgb(220, 223, 217);
+    padding-bottom: 20px;
+    padding-left: 3vw;
+    padding-right: 3vmin;
+}
+
+.all-req {
+    grid-area: all-req;
+}
+
+.new-req {
+    grid-area: new-req;
+}
+
+.blank {
+    grid-area: blank;
+}
+
+.container {
+    display: grid;
+    grid-template-areas: ' all-req all-req new-req' 'all-req all-req blank';
+    background-color: rgb(231, 227, 235);
+}
+
+#welcome {
+    display: grid;
+    grid-template: 1fr 1f 1f 1;
+    background-color: rgb(28, 151, 124);
+    align-content: center;
+    padding-left: 300px;
+    padding-right: 300px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+#nav-bar {
+    padding-bottom: 30px;
+    background-color: rgb(28, 151, 124);
+    padding-top: 30px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 1vmin;
+    padding: 2vmin;
+}
+
+li {
+    display: inline;
+    padding-right: 30px;
+    padding-left: 30px;
+    text-decoration: darkgoldenrod;
+}
+
+.all-req {
+    display: grid;
+    grid-row: 0/span 100vh;
+    grid-column: 0/ span 100vw;
+    padding-left: 3vw;
+}
+
+.new-req {
+    display: grid;
+    grid-row: 1/ span 20vh;
+    grid-column: 2/ span 20vw;
+    padding-right: 30px;
+    padding-left: 50px;
+}
+
+table {
+    background: rgb(189, 156, 144);
+}
+
+thead {
+    background-color: rgb(45, 155, 182);
+    padding: 30px;
+    font-size: large;
+}
+
+th {
+    padding: 20px;
+}
+
+td {
+    padding: 10px;
+    text-align: justify;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

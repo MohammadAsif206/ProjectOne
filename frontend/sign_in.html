@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head id="header">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="./image/login.png">
+    <link href="signin.css" rel="stylesheet">
+    <title>Sign In</title>
+
+</head>
+
+<body class="text-align-center">
+    <div>
+        <h1 id="welcome">Welcome to Employee Reimbursment System</h1>
+    </div>
+
+    <div class="container">
+
+        <img class="mb-4" style="padding-left: 40px ;padding-top:3em;" src="./image/login.png" alt="" width="72" height="72">
+        <h2 class="h3 mb-3 font-weight-normal">Please sign in</h2>
+        <label for="userId" class="sr-only"></label>
+        <input type="text" id="userId" class="form-control" placeholder="user id">
+        <label for="userPassword" class="sr-only"></label>
+        <input type="password" id="userPassword" class="form-control" placeholder="Password">
+        <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button id="submitBtn" type="submit">sigin</button>
+        <p class="mt-5 mb-3 text-muted" style="padding-left: 40px; padding-bottom: 800px;">&copy; 2021-2025</p>
+    </div>
+</body>
+<script>
+    const userIdInput = document.getElementById("userId")
+    const userPasswordInput = document.getElementById("userPassword")
+
+    async function signin() {
+        console.log("Hello")
+
+        const response = await fetch(`http://127.0.0.1:5000/login/userId/${userIdInput.value}/password/${userPasswordInput.value}`)
+
+        if (response.status === 400 || response.status === 404) {
+            return alert("Either entered username or password is wrong.")
+        } else {
+            data = await response.json() //await is here
+            if ("managerId" in data) {
+                alert(data.firstName + '  welcome')
+                location.replace("file:///C:/Users/moham/PycharmProjects/ProjectOne/frontend/manager.html")
+            } else {
+                alert(` Welcome ${data.firstName}`)
+                localStorage.setItem("employee_id", data.employeeId);
+                location.replace("file:///C:/Users/moham/PycharmProjects/ProjectOne/frontend/employee.html")
+            }
+        }
+    }
+    const submitBtn = document.getElementById("submitBtn")
+    submitBtn.addEventListener("click", signin)
+</script>
+
+</html>

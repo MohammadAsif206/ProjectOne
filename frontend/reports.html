@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="employee.css" rel="stylesheet">
+    <title>Manager</title>
+</head>
+
+<body>
+    <ul id="nav-bar">
+        <li><a href="manager.html" style="text-align: center; ">Manager Home</a></li>
+        <li><a href="#statisics" style="text-align: center;">Statiscs Page</a></li>
+        <li><a href="Sign_in.html">Logout</a></li>
+    </ul>
+    <div class="container">
+        <div class="all-req">
+            <h1 class="h1"> Total Expense Per Employee</h1>
+            <table>
+                <thead>
+                    <th>Employee ID</th>
+                    <th>First Name</th>
+                    <th>Total Expense Per Employee</th>
+                    <th>Percentage</th>
+                    <th>Requests Per Employee</th>
+                </thead>
+                <tbody id="requestTableBody">
+                </tbody>
+            </table>
+
+        </div>
+        <table style="border-radius: 20px; margin: 20px;">
+            <thead style="margin: 5px; border-radius: 20px;">
+                <th style="background-color: blueviolet; font-family: serif; font-size: small;
+                border-radius: 20px;">Total Sum of Requests</th>
+                <th style="background-color: chartreuse; font-family: serif;font-size: small; border-radius: 20px;">Total Sum of Expense</th>
+            </thead>
+            <tbody id="total" style="border-radius: 20px; background-color: cornsilk; text-align: center;"></tbody>
+        </table>
+
+
+    </div>
+</body>
+<script>
+    get_all_requests()
+    const erequest_id = document.getElementById("erquestIdInput")
+    const rstatus = document.getElementById("rstatusInput")
+
+    async function get_all_requests() {
+        const response = await fetch(`http://127.0.0.1:5000/reports`)
+        if (response.rstatus === 404) {
+            return alert(" There is not any request for you.")
+        } else {
+            const reports = await response.json()
+            var innerP = ""
+            var k = 1
+            for (let b of reports) {
+                if (k == 1)
+                    innerP += `<tr>
+                    <td style="text-align:center; border-radius:10px">${b.tRequest}</td>
+                    <td style="text-align:center; border-radius: 10px">$${b.totalSum}</td>`
+                k++
+            }
+            let innerRows = ""
+            for (let r of reports) {
+                innerRows += `<tr>
+             <td>${r.employeeId}</td>
+             <td>${r.firstName}</td>
+             <td>$${r.amount}</td>
+             <td>${r.percentage}%</td>
+             <td>${r.trPere}</td>             
+             </tr>`
+            }
+
+            requestTableBody.innerHTML = innerRows
+
+        }
+        total.innerHTML = innerP
+
+    }
+</script>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="employee.css" rel="stylesheet">
+    <title>Manager</title>
+</head>
+
+<body>
+    <ul id="nav-bar">
+        <li><a href="#home" style="text-align: center; ">Manager Home</a></li>
+        <li><a href="reports.html" style="text-align: center;">Statiscs Page</a></li>
+        <li><a href="Sign_in.html">Logout</a></li>
+    </ul>
+    <div class="container">
+        <div class="all-req">
+            <h1 class="h1"> All Requests</h1>
+            <table>
+                <thead>
+                    <th>RID</th>
+                    <th>Amount</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>EID</th>
+                    <th>Comment</th>
+                </thead>
+                <tbody id="requestTableBody">
+                </tbody>
+            </table>
+        </div>
+        <div class="new-req">
+            <h1 class="h2">Take Action </h1>
+
+            <label for="erequest_id">Request ID</label>
+            <input name="erequest_id" id="erquestIdInput" type="number" placeholder="id number">
+            <br>
+            <label for="rstatus">Status</label>
+            <input name="rstatus" id="rstatusInput" type="text" placeholder="status">
+            <label for="message">Comment</label>
+            <input name="message" id="messageInput" type="text" placeholder="comment">
+            <label for="btn">Submit </label>
+            <button id="btn" onclick="updateRequest()">Submit</button>
+        </div>
+        <div class="blank"></div>
+    </div>
+</body>
+<script>
+    get_all_requests()
+    const erequest_id = document.getElementById("erquestIdInput")
+    const rstatus = document.getElementById("rstatusInput")
+    const message = document.getElementById("messageInput")
+    async function updateRequest() {
+        if (rstatus.value === "" || erequest_id.value === "") {
+            return alert("some fields are empty")
+
+        } else {
+            const response = await fetch(`http://127.0.0.1:5000/requests/id/${Number(erequest_id.value)}/status/${rstatus.value}/comment/${message.value}`, {
+                method: "PATCH"
+            })
+            if (response.status === 200) {
+                return alert(`The request was successfully updated`)
+            } else {
+                return alert("The resource was not found")
+            }
+        }
+    }
+    async function get_all_requests() {
+        const response = await fetch(`http://127.0.0.1:5000/requests`)
+        if (response.rstatus === 404) {
+            return alert(" There is not any request for you.")
+        } else {
+            const requests = await response.json()
+            let innerRows = ""
+            for (let r of requests) {
+                innerRows += `<tr>
+             <td>${r.erequestId}</td>
+             <td>${r.amount}</td>
+             <td>${r.reason}</td>
+             <td>${r.rstatus}</td>
+             <td>${r.employeeId}</td>
+             <td>${r.message}</td>
+             </tr>`
+            }
+            requestTableBody.innerHTML = innerRows
+        }
+    }
+</script>
+
+</html>
