@@ -31,11 +31,19 @@ On computers using Widows OS
 - assuming you have Git Bash installed in your machine, right-click on that folder
 - select Git Bash Here
 - in the Git Bash command line prompt type the command
-| git clone https://github.com/MohammadAsif206/ProjectOne.git
+  - git clone https://github.com/MohammadAsif206/ProjectOne.git
+- or on both Winodws OS and Mac OS:
+- open your command prompt
+- cd to your desired folder
+- run the command
+  - git clone https://github.com/MohammadAsif206/ProjectOne.git
 
 ## Usage
+N/A
 
 ## Contributers
+- Mohammad Asif (self)
 
 ## License
+yet to-be determined
 
